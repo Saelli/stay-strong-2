@@ -1,0 +1,68 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ video?.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="favs.toggle(video!.id)" *ngIf="video">
+        <ion-icon
+          [name]="favs.isFavorite(video.id) ? 'heart' : 'heart-outline'"
+          [style.color]="favs.isFavorite(video.id) ? '#e05555' : '#888'"
+          slot="icon-only"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="player-content">
+
+  <div class="video-wrap" *ngIf="video">
+
+    <!-- FREE or SUBSCRIBED: Vimeo iframe -->
+    <iframe
+      *ngIf="safeUrl"
+      [src]="safeUrl"
+      class="vimeo-player"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+
+    <!-- LOCKED -->
+    <div *ngIf="video.locked && !isSubscribed" class="locked-wrap">
+      <img [src]="video.thumbnail" class="locked-thumb" />
+      <div class="locked-overlay">
+        <div class="locked-icon">🔒</div>
+        <h3>Premium Content</h3>
+        <p>Subscribe to watch this workout</p>
+        <button class="unlock-btn" (click)="goToStore()">Unlock Full Access</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="video-info" *ngIf="video">
+    <div class="info-row">
+      <div class="video-title">{{ video.title }}</div>
+      <div class="access-badge" [class.free]="!video.locked">
+        {{ video.locked ? '⭐ Premium' : '✓ Free' }}
+      </div>
+    </div>
+    <div class="meta-row">
+      <span class="meta-item">⏱ {{ video.duration }}</span>
+      <span class="meta-item">🏷 {{ video.category }}</span>
+    </div>
+    <p class="video-desc">{{ video.description }}</p>
+
+    <div class="upsell-card" *ngIf="video.locked && !isSubscribed">
+      <div class="upsell-text">
+        <div class="upsell-title">Get Full Access</div>
+        <div class="upsell-sub">Unlock all premium workouts from $19.99/mo</div>
+      </div>
+      <button class="upsell-btn" (click)="goToStore()">Subscribe</button>
+    </div>
+  </div>
+
+</ion-content>

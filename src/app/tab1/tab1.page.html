@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <div class="brand">
+        <span class="brand-strong">STAY</span><span class="brand-accent"> STRONG</span>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" class="premium-btn" routerLink="/tabs/tab2">
+        <ion-icon name="star" slot="start"></ion-icon>
+        Premium
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-bg">
+
+  <!-- Featured Swiper -->
+  <div class="section featured-section">
+    <swiper-container
+      pagination="true"
+      slides-per-view="1.08"
+      space-between="14"
+      loop="true"
+      autoplay="true"
+      autoplay-delay="3000"
+      autoplay-disable-on-interaction="false"
+      centered-slides="true"
+    >
+      <swiper-slide *ngFor="let v of playlist">
+        <button class="slide-btn" type="button" (click)="play(v)">
+          <div class="slide-card" [style.backgroundImage]="'url(' + v.thumbnail + ')'">
+            <div class="slide-overlay"></div>
+            <div class="slide-badge" [class.full]="sub.isSubscribed() || !v.locked">
+              <ion-icon [name]="!v.locked || sub.isSubscribed() ? 'star' : 'lock-closed'"></ion-icon>
+              {{ !v.locked || sub.isSubscribed() ? 'Full Access' : 'Premium' }}
+            </div>
+            <!-- Heart button -->
+            <button class="heart-btn" type="button" (click)="toggleFav($event, v)">
+              <ion-icon [name]="favs.isFavorite(v.id) ? 'heart' : 'heart-outline'"></ion-icon>
+            </button>
+            <div class="slide-footer">
+              <div class="slide-title">{{ v.title }}</div>
+              <div class="slide-play">
+                <ion-icon name="play-circle"></ion-icon>
+              </div>
+            </div>
+          </div>
+        </button>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+
+  <!-- Popular Now -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Popular Now</h2>
+      <a class="section-link" routerLink="/tabs/tab3">See all</a>
+    </div>
+
+    <div class="popular-scroll">
+      <button
+        class="popular-card-btn"
+        *ngFor="let v of playlist"
+        (click)="play(v)"
+        type="button"
+      >
+        <div class="popular-card" [style.backgroundImage]="'url(' + v.thumbnail + ')'">
+          <div class="popular-overlay"></div>
+          <button class="popular-heart" type="button" (click)="toggleFav($event, v)">
+            <ion-icon [name]="favs.isFavorite(v.id) ? 'heart' : 'heart-outline'"></ion-icon>
+          </button>
+          <div class="popular-title">{{ v.title }}</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab2" [disabled]="payState === 'processing'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- SUCCESS STATE -->
+  <div class="success-screen" *ngIf="payState === 'success'">
+    <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+    <h2 class="success-title">You're Premium!</h2>
+    <p class="success-sub">Welcome to {{ planLabel }}. Enjoy unlimited access.</p>
+  </div>
+
+  <!-- CHECKOUT FORM -->
+  <div class="checkout-wrap" *ngIf="payState !== 'success'">
+
+    <!-- Plan summary -->
+    <div class="plan-summary" [class.gold]="plan === 'gold'">
+      <div class="summary-label">Selected Plan</div>
+      <div class="summary-name">{{ planLabel }}</div>
+      <div class="summary-price">{{ planPrice }}</div>
+      <div class="summary-saving" *ngIf="planSaving">{{ planSaving }}</div>
+    </div>
+
+    <!-- Dummy card form -->
+    <div class="card-form">
+      <div class="form-label">
+        <ion-icon name="card-outline"></ion-icon>
+        Payment Details
+      </div>
+
+      <div class="input-group">
+        <label>Card Number</label>
+        <input type="text" placeholder="4242 4242 4242 4242" maxlength="19" readonly />
+      </div>
+
+      <div class="input-row">
+        <div class="input-group half">
+          <label>Expiry</label>
+          <input type="text" placeholder="12 / 26" readonly />
+        </div>
+        <div class="input-group half">
+          <label>CVC</label>
+          <input type="text" placeholder="123" readonly />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Name on Card</label>
+        <input type="text" placeholder="John Doe" readonly />
+      </div>
+
+      <div class="secure-note">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        Secured with 256-bit SSL encryption
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar" *ngIf="payState !== 'success'">
+    <button
+      class="pay-btn"
+      type="button"
+      [class.processing]="payState === 'processing'"
+      (click)="buy()"
+    >
+      <span *ngIf="payState === 'idle'">Pay {{ planPrice }}</span>
+      <span *ngIf="payState === 'processing'" class="spinner-row">
+        <span class="spinner"></span> Processing…
+      </span>
+    </button>
+  </div>
+
+</ion-content>

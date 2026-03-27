@@ -1,0 +1,58 @@
+<ion-content [fullscreen]="true" class="store-content">
+
+  <div class="page">
+
+    <div class="hero">
+      <h1 class="hero-title">Go <span class="accent">Premium</span></h1>
+      <p class="hero-sub">Unlock every workout. Train without limits.</p>
+    </div>
+
+    <!-- SILVER PLAN -->
+    <div
+      class="plan-card silver"
+      [class.active]="selectedPlan === 'silver'"
+      (click)="selectPlan('silver')"
+    >
+      <div class="plan-top">
+        <div class="plan-name">Silver Monthly</div>
+        <div class="plan-check" [class.visible]="selectedPlan === 'silver'">✓</div>
+      </div>
+      <div class="plan-price">$19.99<span class="plan-period"> / mo</span></div>
+      <ul class="plan-bullets">
+        <li>✦ No ads</li>
+        <li>✦ Full video library</li>
+        <li>✦ Offline access</li>
+      </ul>
+    </div>
+
+    <!-- GOLD PLAN -->
+    <div
+      class="plan-card gold"
+      [class.active]="selectedPlan === 'gold'"
+      (click)="selectPlan('gold')"
+    >
+      <div class="best-badge">BEST VALUE</div>
+      <div class="plan-top">
+        <div class="plan-name">Gold Annual</div>
+        <div class="plan-check" [class.visible]="selectedPlan === 'gold'">✓</div>
+      </div>
+      <div class="plan-price">$99.99<span class="plan-period"> / yr</span></div>
+      <ul class="plan-bullets">
+        <li>✦ No ads</li>
+        <li>✦ Full video library</li>
+        <li>✦ Premium workouts</li>
+        <li>✦ Save $139.89 vs monthly</li>
+      </ul>
+    </div>
+
+    <!-- Continue button inside scroll, NOT fixed -->
+    <div class="continue-wrap">
+      <button class="continue-btn" type="button" (click)="onContinue()">
+        Continue with {{ selectedPlan === 'gold' ? 'Gold Annual' : 'Silver Monthly' }}
+      </button>
+      <p class="cta-note">Cancel anytime. No hidden fees.</p>
+    </div>
+
+  </div>
+
+</ion-content>

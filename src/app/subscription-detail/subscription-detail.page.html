@@ -1,0 +1,97 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>subscription-detail</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">subscription-detail</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab4" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Subscription</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="sub-content">
+
+  <!-- ACTIVE SUBSCRIPTION VIEW -->
+  <div class="sub-wrap" *ngIf="sub.isSubscribed()">
+
+    <div class="active-card">
+      <div class="active-icon">⭐</div>
+      <div class="active-plan">Gold Annual</div>
+      <div class="active-status">Active</div>
+      <div class="active-expiry">Renews April 5, 2026</div>
+    </div>
+
+    <div class="section-title">What's included</div>
+    <div class="perks-list">
+      <div class="perk"><ion-icon name="checkmark-circle" class="check"></ion-icon> Full video library access</div>
+      <div class="perk"><ion-icon name="checkmark-circle" class="check"></ion-icon> Premium workouts</div>
+      <div class="perk"><ion-icon name="checkmark-circle" class="check"></ion-icon> No ads</div>
+      <div class="perk"><ion-icon name="checkmark-circle" class="check"></ion-icon> Offline access</div>
+    </div>
+
+    <button class="cancel-btn" (click)="cancelSubscription()">
+      Cancel Subscription
+    </button>
+
+  </div>
+
+  <!-- NO SUBSCRIPTION: show plan options -->
+  <div class="sub-wrap" *ngIf="!sub.isSubscribed()">
+
+    <div class="hero">
+      <ion-icon name="star-outline" class="hero-icon"></ion-icon>
+      <h2>Go Premium</h2>
+      <p>Unlock every workout. Train without limits.</p>
+    </div>
+
+    <!-- SILVER -->
+    <div class="plan-card silver" [class.active]="selectedPlan === 'silver'" (click)="selectPlan('silver')">
+      <div class="plan-top">
+        <div class="plan-name">Silver Monthly</div>
+        <div class="plan-check" [class.visible]="selectedPlan === 'silver'">✓</div>
+      </div>
+      <div class="plan-price">$19.99<span class="plan-period"> / mo</span></div>
+      <ul class="plan-bullets">
+        <li>✦ No ads</li>
+        <li>✦ Full video library</li>
+        <li>✦ Offline access</li>
+      </ul>
+    </div>
+
+    <!-- GOLD -->
+    <div class="plan-card gold" [class.active]="selectedPlan === 'gold'" (click)="selectPlan('gold')">
+      <div class="best-badge">BEST VALUE</div>
+      <div class="plan-top">
+        <div class="plan-name">Gold Annual</div>
+        <div class="plan-check" [class.visible]="selectedPlan === 'gold'">✓</div>
+      </div>
+      <div class="plan-price">$99.99<span class="plan-period"> / yr</span></div>
+      <ul class="plan-bullets">
+        <li>✦ No ads</li>
+        <li>✦ Full video library</li>
+        <li>✦ Premium workouts</li>
+        <li>✦ Save $139.89 vs monthly</li>
+      </ul>
+    </div>
+
+    <div class="continue-wrap">
+      <button class="continue-btn" (click)="goToCheckout()">
+        Continue with {{ selectedPlan === 'gold' ? 'Gold Annual' : 'Silver Monthly' }}
+      </button>
+      <p class="cta-note">Cancel anytime. No hidden fees.</p>
+    </div>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,63 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="profile-content">
+  <div class="profile-wrap">
+
+    <!-- Avatar + name -->
+    <div class="avatar-section">
+      <div class="avatar-wrap">
+        <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar-img" />
+        <div *ngIf="!avatarUrl" class="avatar-placeholder">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="user-name">{{ name }}</div>
+      <div class="user-email">{{ email }}</div>
+      <div class="user-location">📍 {{ location }}</div>
+    </div>
+
+    <!-- Subscription card -->
+    <div class="sub-card" [class.premium]="sub.isSubscribed()" (click)="goToSubscription()">
+      <div class="sub-left">
+        <div class="sub-plan">{{ subPlan }}</div>
+        <div class="sub-expiry">{{ subExpiry }}</div>
+      </div>
+      <div class="sub-arrow">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="menu-list">
+
+      <div class="menu-item" (click)="goToSettings()">
+        <div class="menu-icon-wrap">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+        <div class="menu-label">Settings</div>
+        <div class="menu-arrow">›</div>
+      </div>
+
+      <div class="menu-item" (click)="needHelp()">
+        <div class="menu-icon-wrap">
+          <ion-icon name="help-circle-outline"></ion-icon>
+        </div>
+        <div class="menu-label">Need help?</div>
+        <div class="menu-arrow">›</div>
+      </div>
+
+      <div class="menu-item danger" (click)="logOut()">
+        <div class="menu-icon-wrap red">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </div>
+        <div class="menu-label">Log out</div>
+        <div class="menu-arrow">›</div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
