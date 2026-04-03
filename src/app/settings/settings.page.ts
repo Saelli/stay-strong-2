@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent,
-  IonButtons, IonBackButton, IonIcon
+  IonButtons, IonBackButton, IonIcon, IonItem, IonInput, IonButton, IonSpinner, IonText
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { cameraOutline, personOutline, mailOutline, locationOutline } from 'ionicons/icons';
 
-// Simple shared profile state service
+import { AuthService } from '../auth/auth.service';
 import { ProfileService } from '../core/services/profile';
 
 @Component({
@@ -19,22 +19,27 @@ import { ProfileService } from '../core/services/profile';
   imports: [
     CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent,
-    IonButtons, IonBackButton, IonIcon,
+    IonButtons, IonBackButton, IonIcon, IonItem, IonInput, IonButton, IonSpinner, IonText,
   ],
 })
 export class SettingsPage {
+  private auth    = inject(AuthService);
+  private profile = inject(ProfileService);
+
   name     = '';
   email    = '';
   location = '';
   avatarUrl: string | null = null;
 
-  saved = false;
+  loading = false;
+  saved   = false;
+  error   = '';
 
-  constructor(private profile: ProfileService) {
+  constructor() {
     addIcons({ cameraOutline, personOutline, mailOutline, locationOutline });
-    this.name      = this.profile.name;
-    this.email     = this.profile.email;
-    this.location  = this.profile.location;
+    this.name     = this.auth.currentUser?.displayName || '';
+    this.email    = this.auth.currentUser?.email || '';
+    this.location = this.profile.location;
     this.avatarUrl = this.profile.avatarUrl;
   }
 
@@ -49,11 +54,23 @@ export class SettingsPage {
     reader.readAsDataURL(file);
   }
 
-  save() {
-    this.profile.name     = this.name.trim()     || this.profile.name;
-    this.profile.email    = this.email.trim()    || this.profile.email;
-    this.profile.location = this.location.trim() || this.profile.location;
-    this.saved = true;
-    setTimeout(() => this.saved = false, 2000);
+  async save() {
+    const name = this.name.trim();
+    if (!name) {
+      this.error = 'Name cannot be empty.';
+      return;
+    }
+    this.error = '';
+    this.loading = true;
+    try {
+      await this.auth.updateUserProfile({ displayName: name });
+      this.profile.location = this.location.trim();
+      this.saved = true;
+      setTimeout(() => this.saved = false, 2000);
+    } catch (e: any) {
+      this.error = e.message || 'Failed to save changes.';
+    } finally {
+      this.loading = false;
+    }
   }
 }

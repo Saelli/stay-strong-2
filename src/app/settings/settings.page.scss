@@ -77,40 +77,43 @@ ion-content.settings-content { --background: #{$dark-bg}; }
 
     ion-icon { font-size: 13px; }
   }
+}
 
-  input {
-    width: 100%;
-    background: $surface;
-    border: 1px solid $border;
-    border-radius: 12px;
-    padding: 14px 16px;
+.auth-item {
+  --background: #{$surface};
+  --border-radius: 12px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --inner-padding-end: 0;
+  border: 1px solid $border;
+  border-radius: 12px;
+
+  &:focus-within { border-color: $orange; }
+
+  ion-input {
+    --color: #{$text};
+    --placeholder-color: #444;
+    --placeholder-opacity: 1;
     font-size: 15px;
-    color: $text;
-    box-sizing: border-box;
-    outline: none;
-    &:focus { border-color: $orange; }
-    &::placeholder { color: #444; }
+    min-height: 46px;
   }
 }
 
-.save-btn {
-  width: 100%;
-  margin-top: 24px;
-  border: 0;
-  border-radius: 16px;
-  padding: 17px;
-  font-size: 16px;
+.btn-primary {
+  --background: #{$orange};
+  --background-activated: #c4440f;
+  --background-hover: #c4440f;
+  --border-radius: 14px;
+  --color: #fff;
+  --box-shadow: 0 8px 24px rgba(232, 83, 26, 0.4);
+  font-size: 15px;
   font-weight: 800;
-  color: #fff;
-  background: linear-gradient(135deg, #E8531A, #c4440f);
-  box-shadow: 0 8px 24px rgba(232, 83, 26, 0.4);
-  cursor: pointer;
-  transition: background 0.3s, transform 0.15s;
+  height: 50px;
+  margin-top: 24px;
+}
 
-  &:active { transform: scale(0.98); }
-
-  &.saved {
-    background: linear-gradient(135deg, #1db954, #148a3a);
-    box-shadow: 0 8px 24px rgba(29, 185, 84, 0.35);
-  }
+.error-msg {
+  font-size: 13px;
+  display: block;
+  margin: 4px 0 8px;
 }

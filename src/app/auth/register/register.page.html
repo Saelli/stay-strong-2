@@ -1,0 +1,86 @@
+<ion-content class="auth-content">
+  <div class="auth-container">
+
+    <div class="auth-logo">
+      <div class="logo-mark">
+        <ion-icon name="flash-outline"></ion-icon>
+      </div>
+      <span class="app-name">STAY STRONG</span>
+    </div>
+
+    <div class="auth-header">
+      <h1>Create account</h1>
+      <p>Get started for free</p>
+    </div>
+
+    <div class="auth-form">
+      <div class="field-group">
+        <label>Full name</label>
+        <ion-item class="auth-item" lines="none">
+          <ion-input
+            type="text"
+            placeholder="Alex Morgan"
+            [(ngModel)]="name"
+            autocomplete="name"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <ion-item class="auth-item" lines="none">
+          <ion-input
+            type="email"
+            placeholder="you@example.com"
+            [(ngModel)]="email"
+            autocomplete="email"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="field-group">
+        <label>Password</label>
+        <ion-item class="auth-item" lines="none">
+          <ion-input
+            type="password"
+            placeholder="Min. 8 characters"
+            [(ngModel)]="password"
+            autocomplete="new-password"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="field-group">
+        <label>Confirm password</label>
+        <ion-item class="auth-item" lines="none">
+          <ion-input
+            type="password"
+            placeholder="••••••••"
+            [(ngModel)]="confirmPassword"
+            autocomplete="new-password"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-text color="danger" *ngIf="error" class="error-msg">
+        {{ error }}
+      </ion-text>
+
+      <ion-button
+        expand="block"
+        class="btn-primary"
+        (click)="onRegister()"
+        [disabled]="loading"
+      >
+        <ion-spinner *ngIf="loading" name="crescent" slot="start"></ion-spinner>
+        {{ loading ? 'Creating account…' : 'Create account' }}
+      </ion-button>
+    </div>
+
+    <p class="switch-text">
+      Already have one?
+      <span class="link" (click)="goToLogin()">Sign in</span>
+    </p>
+
+  </div>
+</ion-content>

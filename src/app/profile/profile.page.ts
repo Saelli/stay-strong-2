@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,
-  IonButton, IonButtons, IonModal } from '@ionic/angular/standalone';
+  IonButton, IonButtons
+} from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { SubscriptionService } from '../core/services/subscription';
 import { FavoritesService } from '../core/services/favorites-service';
+import { AuthService } from '../auth/auth.service';
+import { ProfileService } from '../core/services/profile';
 import { addIcons } from 'ionicons';
 import {
   personCircleOutline, cardOutline, settingsOutline,
@@ -17,17 +20,29 @@ import {
   templateUrl: 'profile.page.html',
   styleUrls: ['profile.page.scss'],
   standalone: true,
-  imports: [IonModal, 
+  imports: [
     CommonModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,
-    IonButton, IonButtons,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,   
   ],
 })
 export class ProfilePage {
-  name     = 'Jane Doe';
-  email    = 'jane@example.com';
-  location = 'New York, USA';
-  avatarUrl: string | null = null;
+  private auth     = inject(AuthService);
+  private router   = inject(Router);
+  private profile  = inject(ProfileService);
+  public  sub      = inject(SubscriptionService);
+  public  favs     = inject(FavoritesService);
+
+  get displayName(): string {
+    return this.auth.currentUser?.displayName || 'No name set';
+  }
+
+  get email(): string {
+    return this.auth.currentUser?.email || '';
+  }
+
+  get avatarUrl(): string | null {
+    return this.profile.avatarUrl || this.auth.currentUser?.photoURL || null;
+  }
 
   get subPlan(): string {
     return this.sub.isSubscribed() ? 'Gold Annual' : 'Free Plan';
@@ -37,29 +52,19 @@ export class ProfilePage {
     return this.sub.isSubscribed() ? 'Renews April 5, 2026' : 'Upgrade for full access';
   }
 
-  constructor(
-    public sub: SubscriptionService,
-    public favs: FavoritesService,
-    private router: Router,
-  ) {
+  constructor() {
     addIcons({
       personCircleOutline, cardOutline, settingsOutline,
       logOutOutline, helpCircleOutline, chevronForwardOutline
     });
   }
 
-  goToSubscription() {
-    this.router.navigate(['/subscription-detail']);
-  }
+  goToSubscription() { this.router.navigate(['/subscription-detail']); }
+  goToSettings()     { this.router.navigate(['/settings']); }
+  needHelp()         { this.router.navigate(['/help']); }
 
-  goToSettings() {
-    this.router.navigate(['/settings']);
-  }
-
-  needHelp() { /* placeholder */ }
-
-  logOut() {
+  async logOut() {
     this.sub.setSubscribed(false);
-    this.router.navigate(['/tabs/tab1']);
+    await this.auth.logout();
   }
 }

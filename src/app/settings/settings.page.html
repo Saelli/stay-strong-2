@@ -13,10 +13,14 @@
     <!-- Photo -->
     <div class="photo-section">
       <div class="photo-wrap">
-        <img *ngIf="avatarUrl" [src]="avatarUrl" class="photo-img" />
-        <div *ngIf="!avatarUrl" class="photo-placeholder">
-          <ion-icon name="person-outline"></ion-icon>
-        </div>
+        @if (avatarUrl) {
+          <img [src]="avatarUrl" class="photo-img" />
+        }
+        @if (!avatarUrl) {
+          <div class="photo-placeholder">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+        }
         <label class="camera-btn">
           <ion-icon name="camera-outline"></ion-icon>
           <input type="file" accept="image/*" (change)="onPhotoSelect($event)" hidden />
@@ -33,7 +37,14 @@
         <ion-icon name="person-outline"></ion-icon>
         Name
       </label>
-      <input type="text" [(ngModel)]="name" placeholder="Your name" />
+      <ion-item class="auth-item" lines="none">
+        <ion-input
+          type="text"
+          [(ngModel)]="name"
+          placeholder="Your name"
+          autocomplete="name"
+        ></ion-input>
+      </ion-item>
     </div>
 
     <div class="field-group">
@@ -41,7 +52,14 @@
         <ion-icon name="mail-outline"></ion-icon>
         Email
       </label>
-      <input type="email" [(ngModel)]="email" placeholder="your@email.com" />
+      <ion-item class="auth-item" lines="none">
+        <ion-input
+          type="email"
+          [value]="email"
+          [disabled]="true"
+          placeholder="your@email.com"
+        ></ion-input>
+      </ion-item>
     </div>
 
     <div class="field-group">
@@ -49,12 +67,30 @@
         <ion-icon name="location-outline"></ion-icon>
         Location
       </label>
-      <input type="text" [(ngModel)]="location" placeholder="City, Country" />
+      <ion-item class="auth-item" lines="none">
+        <ion-input
+          type="text"
+          [(ngModel)]="location"
+          placeholder="City, Country"
+        ></ion-input>
+      </ion-item>
     </div>
 
-    <button class="save-btn" [class.saved]="saved" (click)="save()">
-      {{ saved ? '✓ Saved!' : 'Save Changes' }}
-    </button>
+    @if (error) {
+      <ion-text color="danger" class="error-msg">{{ error }}</ion-text>
+    }
+
+    <ion-button
+      expand="block"
+      class="btn-primary"
+      [disabled]="loading"
+      (click)="save()"
+    >
+      @if (loading) {
+        <ion-spinner name="crescent" slot="start"></ion-spinner>
+      }
+      {{ saved ? '✓ Saved!' : (loading ? 'Saving…' : 'Save Changes') }}
+    </ion-button>
 
   </div>
 </ion-content>

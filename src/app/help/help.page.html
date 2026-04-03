@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab4" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Help</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="help-content">
+  <div class="help-wrap">
+
+    <!-- FAQ -->
+    <div class="section-label">Frequently Asked Questions</div>
+
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of faqs" (click)="toggleFaq(faq)">
+        <div class="faq-row">
+          <div class="faq-q">{{ faq.q }}</div>
+          <ion-icon [name]="faq.open ? 'chevron-up-outline' : 'chevron-down-outline'" class="faq-icon"></ion-icon>
+        </div>
+        <div class="faq-a" *ngIf="faq.open">{{ faq.a }}</div>
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <div class="section-label">Contact Support</div>
+
+    <div class="form-card" *ngIf="!sent">
+      <div class="field-group">
+        <label>Name</label>
+        <input type="text" [(ngModel)]="name" placeholder="Your name" />
+      </div>
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="email" placeholder="your@email.com" />
+      </div>
+      <div class="field-group">
+        <label>Message</label>
+        <textarea [(ngModel)]="message" placeholder="How can we help you?" rows="4"></textarea>
+      </div>
+      <button class="send-btn" (click)="submitForm()">Send Message</button>
+    </div>
+
+    <div class="success-card" *ngIf="sent">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Message Sent!</div>
+      <div class="success-sub">We'll get back to you within 24 hours.</div>
+    </div>
+
+    <!-- App version -->
+    <div class="version-card">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <div class="version-info">
+        <div class="version-name">Stay Strong</div>
+        <div class="version-number">Version 1.0.0</div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
